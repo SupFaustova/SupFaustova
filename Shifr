@@ -1,0 +1,144 @@
+import tkinter
+from tkinter import *
+from tkinter import scrolledtext
+
+sd = ''
+k = '111111'
+isp = 0
+
+
+def Genrad(key,use):
+    a = []
+    b = []
+    bc = []
+    shag = (int(k[0]) + int(k[1])+3)
+    a = [j for j in range(11, 10000, shag)]
+    if int(k[3]) < 5:
+        a = a[::-1]
+    a = [jjj*(-1)+int(k[4]) for jjj in a]
+    b += a[0::int(k[5])]
+    if len(b) > 100:
+        del b[100:]
+    bc = [(7-isp*2)*i**2 - 17 * (int(k[2])+isp) + int(k[3]) for i in b]
+    use += 1
+    return bc, use
+
+nom, isp = Genrad(k,isp)
+
+def clicked():
+    txt2.delete(1.0, END)
+    sd = str(txt1.get(1.0, END))
+    dd = shifr(sd,nom)
+    txt2.insert(INSERT, dd)
+    txt1.delete(1.0, END)
+
+def clicked5():
+    global nom
+    global isp
+    k = str(txt3.get(1.0, END))
+    nom, isp = Genrad(k,isp)
+    txt3.delete(1.0, END)
+    label['text'] = isp
+    print(isp)
+
+
+def clicked1():
+    txt2.delete(1.0, END)
+    sd = str(txt1.get(1.0, END))
+    dd = rashifr(sd,nom)
+    txt2.insert(INSERT, dd)
+    txt1.delete(1.0, END)
+
+
+a=3
+b=4
+
+def rashifr(text, nom):
+    text2 = []
+    n = 1
+    slovar = ['й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д',
+              'ж', 'э', 'я', 'ч', 'с', 'м'
+        , 'и', 'т', 'ь', 'б', 'ю', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', 'Ф', 'Ы', 'В', 'А', 'П',
+              'Р', 'О', 'Л', 'Д', 'Ж', 'Э'
+        , 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '.', ',', '-', '+', '=', '1', '2', '3', '4', '5', '6', '7', '8',
+              '9', '0', 'Ё', 'ё', '(', ')', ' ']
+    text = text.strip(' ')
+    text = text + ' '
+    tex = ''
+    while len(text) > 1:
+        n = text.find(' ')
+        a = text[0:n]
+        text = text[n + 1:]
+        if a != '\n':
+           text2.append(a)
+
+
+    for j in range(len(text2)):
+      for g in range(len(nom)):
+           if int(text2[j]) == nom[g]:
+                 tex = tex  + str(slovar[g])
+
+
+    return tex
+
+
+def vst():
+     txt1.insert(INSERT, window.clipboard_get())
+
+def cop():
+    window.clipboard_clear()
+    window.clipboard_append(str(txt2.get(1.0, END)))
+
+
+def shifr(text, nom):
+    text2 = []
+    slovar = ['й','ц','у','к','е','н','г','ш','щ','з','х','ъ','ф','ы','в','а','п','р','о','л','д','ж','э','я','ч','с','м'
+              ,'и','т','ь','б','ю', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э'
+              , 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '.', ',', '-', '+', '=', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Ё', 'ё', '(', ')', ' ']
+    for i in range(len(text)-1):
+        for j in range(len(slovar)):
+            if text[i] == str(slovar[j]):
+                text2.append(nom[j])
+    return text2
+
+
+window = Tk()
+window.title("MesX")
+window.geometry('900x600')
+
+
+
+btn1 = Button(window, text="Перевести", command=clicked)
+btn1.pack(expand='YES')
+
+btn2 = Button(window, text="Перевести в норм текст", command=clicked1)
+btn2.pack(expand='YES')
+
+btn3 = Button(window, text="Копир", command=cop)
+btn3.pack(expand='YES')
+
+btn4 = Button(window, text="Вставить", command=vst)
+btn4.pack(expand='YES')
+
+btn5 = Button(window, text="Ключ", command=clicked5)
+btn5.pack(expand='YES')
+
+txt1 = scrolledtext.ScrolledText(window, width=40, height=10)
+txt1.pack(expand='YES')
+
+txt2 = scrolledtext.ScrolledText(window, width=40, height=10)
+txt2.pack(expand='YES')
+
+txt3 = scrolledtext.ScrolledText(window, width=30, height=0.5)
+txt3.pack(expand='YES')
+label = Label(
+    text=isp,
+    fg="white",
+    bg="black",
+    width=10,
+    height=10)
+
+
+label.pack()
+
+window.mainloop()
